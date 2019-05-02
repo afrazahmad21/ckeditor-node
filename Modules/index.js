@@ -3,6 +3,9 @@ var router = express.Router();
 const Editor = require('./Model');
 
 
+router.get('/', (req, res) =>{
+    res.status(200).json({message: "Welcome to CK-EDITOR APi"})
+})
 
 router.post('/save', async (req, res) => {
     try {
