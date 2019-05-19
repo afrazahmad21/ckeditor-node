@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const Editor = require('./Model');
+var upload = multer({dest: 'uploads/'})
 
 
-router.get('/', (req, res) =>{
+router.get('/', (req, res) => {
     res.status(200).json({message: "Welcome to CK-EDITOR APi"})
 })
 
@@ -29,4 +30,7 @@ router.get('/view', async (req, res) => {
     res.status(200).json({editor})
 })
 
+router.post('/upload', upload.single('file'), async (req, res) => {
+    res.status(200).json({message: "uploaded successfully"})
+})
 module.exports = router;
