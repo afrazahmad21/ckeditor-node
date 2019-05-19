@@ -1,7 +1,17 @@
 var express = require('express');
 var router = express.Router();
 const Editor = require('./Model');
-var upload = multer({dest: 'uploads/'})
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({storage: storage})
 
 
 router.get('/', (req, res) => {
@@ -30,7 +40,8 @@ router.get('/view', async (req, res) => {
     res.status(200).json({editor})
 })
 
-router.post('/upload', upload.single('file'), async (req, res) => {
-    res.status(200).json({message: "uploaded successfully"})
+router.post('/upload', upload.single('upload'), async (req, res) => {
+    const url = req.protocol +"://" + req.headers.host + "/"+req.file.path;
+    res.status(200).json({default: url})
 })
 module.exports = router;
